@@ -185,6 +185,8 @@ void SysTick_Handler(void)
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
+  //HAL_SYSTICK_IRQHandler();
+
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */
@@ -198,6 +200,11 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
+
+void EXTI0_IRQHandler(void)
+{
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
