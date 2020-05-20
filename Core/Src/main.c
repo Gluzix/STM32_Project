@@ -16,12 +16,14 @@
   *
   ******************************************************************************
   */
+
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-  GPIO_InitTypeDef GPIO_InitStruct;
+
+  GPIO_InitTypeDef 		GPIO_InitStruct;
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -63,12 +65,19 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
-
+int counter = 0;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin == GPIO_PIN_0)
+	if( GPIO_Pin == GPIO_PIN_0 )
 	{
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
+		switch(counter)
+		{
+		case 0: HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12); counter++; break;
+		case 1: HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13); counter++; break;
+		case 2: HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14); counter++; break;
+		case 3: HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15); counter=0; break;
+		}
+
 	}
 }
 
@@ -81,12 +90,10 @@ int main(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
-  HAL_EXTI_SetConfigLine
-
   //__GPIOD_CLK_ENABLE();
   //__GPIOA_CLK_ENABLE();
 
-  GPIO_InitStruct.Pin = /*GPIO_PIN_15 | GPIO_PIN_14 | GPIO_PIN_13 | */GPIO_PIN_12;
+  GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -94,8 +101,8 @@ int main(void)
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
 
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -104,8 +111,7 @@ int main(void)
 
   while (1)
   {
-	  //HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
-	  //HAL_Delay(1000);
+
   }
   /* USER CODE END 3 */
 }
